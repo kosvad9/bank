@@ -1,47 +1,47 @@
 --liquibase formatted sql
 
 --changeset kosvad9:1
-CREATE TABLE users(
-    id BIGSERIAL,
-    phone_number VARCHAR(13) UNIQUE,
+CREATE TABLE IF NOT EXISTS users(
+    id BIGSERIAL PRIMARY KEY,
+    phone_number VARCHAR(13) UNIQUE NOT NULL,
     password VARCHAR,
-    first_name VARCHAR(64),
-    last_name VARCHAR(64),
+    first_name VARCHAR(64) NOT NULL ,
+    last_name VARCHAR(64) NOT NULL ,
     patronymic VARCHAR(64),
     UNIQUE (first_name, last_name, patronymic)
 );
 
 --changeset kosvad9:2
-CREATE TABLE staff(
-    id BIGSERIAL,
-    id_user BIGINT UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+CREATE TABLE IF NOT EXISTS staff(
+    id_user BIGINT REFERENCES users(id) ON DELETE CASCADE,
     role VARCHAR(32),
-    status VARCHAR(32)
+    status VARCHAR(32),
+    PRIMARY KEY (id_user)
 );
 
 --changeset kosvad9:3
-CREATE TABLE client(
-    id BIGSERIAL,
-    id_user BIGINT UNIQUE REFERENCES users(id),
+CREATE TABLE IF NOT EXISTS client(
+    id_user BIGINT REFERENCES users(id),
     birthdate DATE,
-    passport_number VARCHAR UNIQUE,
-    passport_id VARCHAR UNIQUE,
-    passport_date DATE
+    passport_number VARCHAR UNIQUE NOT NULL ,
+    passport_id VARCHAR UNIQUE NOT NULL ,
+    passport_date DATE,
+    PRIMARY KEY (id_user)
 );
 
 --changeset kosvad9:4
-CREATE TABLE credit(
-    id BIGSERIAL,
-    id_client BIGINT REFERENCES client(id),
-    amount DECIMAL(14,2),
-    debt DECIMAL(14,2),
+CREATE TABLE IF NOT EXISTS credit(
+    id BIGSERIAL PRIMARY KEY,
+    id_client BIGINT REFERENCES client(id_user),
+    amount DECIMAL(14,2) NOT NULL,
+    debt DECIMAL(14,2) NOT NULL,
     date_end DATE,
     interest_rate INT
 );
 
 --changeset kosvad9:5
-CREATE TABLE credit_program(
-    id SERIAL,
+CREATE TABLE IF NOT EXISTS credit_program(
+    id SERIAL PRIMARY KEY,
     description VARCHAR,
     interest_rate INT,
     max_amount DECIMAL(14,2),
@@ -49,9 +49,9 @@ CREATE TABLE credit_program(
 );
 
 --changeset kosvad9:6
-CREATE TABLE application(
-    id BIGSERIAL,
-    id_client BIGINT REFERENCES client(id),
+CREATE TABLE IF NOT EXISTS application(
+    id BIGSERIAL PRIMARY KEY,
+    id_client BIGINT REFERENCES client(id_user),
     date DATE,
     id_program INT REFERENCES credit_program(id),
     status VARCHAR(32),
@@ -59,17 +59,17 @@ CREATE TABLE application(
 );
 
 --changeset kosvad9:7
-CREATE TABLE currency(
-    id SERIAL,
-    code VARCHAR(3),
+CREATE TABLE IF NOT EXISTS currency(
+    id SERIAL PRIMARY KEY,
+    code VARCHAR(3) UNIQUE NOT NULL,
     name VARCHAR(32)
 );
 
 --changeset kosvad9:8
-CREATE TABLE account(
-    id BIGSERIAL,
-    id_client BIGINT REFERENCES client(id),
-    iban VARCHAR(34),
+CREATE TABLE IF NOT EXISTS account(
+    id BIGSERIAL PRIMARY KEY,
+    id_client BIGINT REFERENCES client(id_user),
+    iban VARCHAR(34) UNIQUE NOT NULL,
     amount DECIMAL(14,2),
     id_currency INT REFERENCES currency(id),
     date_create DATE,
@@ -78,11 +78,11 @@ CREATE TABLE account(
 );
 
 --changeset kosvad9:9
-CREATE TABLE card(
-     id BIGSERIAL,
-     billing_system VARCHAR(32),
-     number VARCHAR,
-     expiration_date DATE,
-     CVV VARCHAR,
+CREATE TABLE IF NOT EXISTS card(
+     id BIGSERIAL PRIMARY KEY,
+     billing_system VARCHAR(32) NOT NULL,
+     number VARCHAR UNIQUE NOT NULL,
+     expiration_date DATE NOT NULL,
+     CVV VARCHAR NOT NULL,
      id_account BIGINT REFERENCES account(id)
 );

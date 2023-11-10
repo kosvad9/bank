@@ -1,18 +1,19 @@
+db.schema: bank
 spring:
   jpa:
     properties:
       hibernate:
         show_sql: true
         format_sql: true
-        default_schema: Bank
         hbm2ddl.auto: validate
+        default_schema: ${db.schema}
   datasource:
     username: postgres
     password: masterkey
     url: jdbc:postgresql://localhost:5433/postgres
     driver-class-name: org.postgresql.Driver
   liquibase:
-    default-schema: Bank
+    default-schema: ${db.schema}
 logging:
   file:
     name: log.log
