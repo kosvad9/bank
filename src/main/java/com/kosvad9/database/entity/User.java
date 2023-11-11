@@ -10,8 +10,8 @@ import org.hibernate.annotations.ColumnTransformer;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "users",
-        uniqueConstraints = @UniqueConstraint(columnNames = {"first_name","last_name","patronymic"}))
+@Table(name = "users")
+//uniqueConstraints = @UniqueConstraint(columnNames = {"first_name","last_name","patronymic"})
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class User implements BaseEntity<Long> {
     @Id

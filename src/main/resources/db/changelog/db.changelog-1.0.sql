@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS users(
 
 --changeset kosvad9:2
 CREATE TABLE IF NOT EXISTS staff(
-    id_user BIGINT REFERENCES users(id) ON DELETE CASCADE,
+    id_user BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     role VARCHAR(32),
     status VARCHAR(32),
     PRIMARY KEY (id_user)
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS staff(
 
 --changeset kosvad9:3
 CREATE TABLE IF NOT EXISTS client(
-    id_user BIGINT REFERENCES users(id),
+    id_user BIGINT NOT NULL REFERENCES users(id),
     birthdate DATE,
     passport_number VARCHAR UNIQUE NOT NULL ,
     passport_id VARCHAR UNIQUE NOT NULL ,
@@ -32,28 +32,28 @@ CREATE TABLE IF NOT EXISTS client(
 --changeset kosvad9:4
 CREATE TABLE IF NOT EXISTS credit(
     id BIGSERIAL PRIMARY KEY,
-    id_client BIGINT REFERENCES client(id_user),
-    amount DECIMAL(14,2) NOT NULL,
-    debt DECIMAL(14,2) NOT NULL,
-    date_end DATE,
-    interest_rate INT
+    id_client BIGINT NOT NULL REFERENCES client(id_user),
+    amount DECIMAL(14,2) NOT NULL CHECK ( amount >= 0 ),
+    debt DECIMAL(14,2) NOT NULL CHECK ( debt >= 0 ),
+    date_end DATE NOT NULL,
+    interest_rate INT CHECK ( interest_rate >= 0 )
 );
 
 --changeset kosvad9:5
 CREATE TABLE IF NOT EXISTS credit_program(
     id SERIAL PRIMARY KEY,
     description VARCHAR,
-    interest_rate INT,
-    max_amount DECIMAL(14,2),
-    max_period_month INT
+    interest_rate INT CHECK ( interest_rate >= 0 ),
+    max_amount DECIMAL(14,2) CHECK ( max_amount > 0 ),
+    max_period_month INT CHECK ( max_period_month > 0 )
 );
 
 --changeset kosvad9:6
 CREATE TABLE IF NOT EXISTS application(
     id BIGSERIAL PRIMARY KEY,
-    id_client BIGINT REFERENCES client(id_user),
+    id_client BIGINT NOT NULL REFERENCES client(id_user),
     date DATE,
-    id_program INT REFERENCES credit_program(id),
+    id_program INT NOT NULL REFERENCES credit_program(id),
     status VARCHAR(32),
     description VARCHAR
 );
@@ -68,10 +68,10 @@ CREATE TABLE IF NOT EXISTS currency(
 --changeset kosvad9:8
 CREATE TABLE IF NOT EXISTS account(
     id BIGSERIAL PRIMARY KEY,
-    id_client BIGINT REFERENCES client(id_user),
+    id_client BIGINT NOT NULL REFERENCES client(id_user),
     iban VARCHAR(34) UNIQUE NOT NULL,
-    amount DECIMAL(14,2),
-    id_currency INT REFERENCES currency(id),
+    amount DECIMAL(14,2) CHECK ( amount >= 0 ),
+    id_currency INT NOT NULL REFERENCES currency(id),
     date_create DATE,
     date_close DATE,
     status VARCHAR(32)
@@ -84,5 +84,5 @@ CREATE TABLE IF NOT EXISTS card(
      number VARCHAR UNIQUE NOT NULL,
      expiration_date DATE NOT NULL,
      CVV VARCHAR NOT NULL,
-     id_account BIGINT REFERENCES account(id)
+     id_account BIGINT NOT NULL REFERENCES account(id)
 );

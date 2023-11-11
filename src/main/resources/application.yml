@@ -7,6 +7,10 @@ spring:
         format_sql: true
         hbm2ddl.auto: validate
         default_schema: ${db.schema}
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
   datasource:
     username: postgres
     password: masterkey
