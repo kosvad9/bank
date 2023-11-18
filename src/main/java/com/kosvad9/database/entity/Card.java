@@ -1,6 +1,7 @@
 package com.kosvad9.database.entity;
 
 import com.kosvad9.database.enums.BillingSystem;
+import com.kosvad9.database.enums.StatusCard;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,4 +32,7 @@ public class Card implements BaseEntity<Long> {
     @ManyToOne
     @JoinColumn(name = "id_account")
     private Account account;
+
+    @Enumerated(EnumType.STRING)
+    private StatusCard status;
 }

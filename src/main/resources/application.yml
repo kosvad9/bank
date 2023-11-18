@@ -1,3 +1,8 @@
+iban:
+  country: BY
+  countryDigits: 1134
+  bank: VAKO
+  bankDigits: 31102024
 db.schema: bank
 spring:
   jpa:
@@ -16,6 +21,8 @@ spring:
     password: masterkey
     url: jdbc:postgresql://localhost:5433/postgres
     driver-class-name: org.postgresql.Driver
+    hikari:
+      schema: ${db.schema}
   liquibase:
     default-schema: ${db.schema}
 logging:

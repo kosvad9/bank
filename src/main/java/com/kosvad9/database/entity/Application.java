@@ -1,9 +1,11 @@
 package com.kosvad9.database.entity;
 
+import com.kosvad9.database.enums.BillingSystem;
 import com.kosvad9.database.enums.StatusApplication;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
@@ -32,4 +34,8 @@ public class Application implements BaseEntity<Long> {
     private StatusApplication status;
 
     private String description;
+
+    private BigDecimal amount;
+
+    private Integer periodMonth;
 }

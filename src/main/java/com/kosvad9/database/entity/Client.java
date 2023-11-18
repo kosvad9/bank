@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@ToString(callSuper = true)
+@ToString(callSuper = true, exclude = {"accounts","credits","applications"})
 @EqualsAndHashCode(of = "passportInfo.passportId")
 @Entity
 @PrimaryKeyJoinColumn(name = "id_user")
