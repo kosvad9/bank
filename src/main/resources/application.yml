@@ -3,6 +3,7 @@ iban:
   countryDigits: 1134
   bank: VAKO
   bankDigits: 31102024
+card.bin: 12049
 db.schema: bank
 spring:
   jpa:

@@ -10,7 +10,6 @@ public class ClientDtoMapper implements Mapper<Client, ClientDto> {
     public ClientDto map(Client value) {
         return new ClientDto(value.getId(),
                 value.getPhoneNumber(),
-                value.getPassword(),
                 value.getFirstName(),
                 value.getLastName(),
                 value.getPatronymic(), 

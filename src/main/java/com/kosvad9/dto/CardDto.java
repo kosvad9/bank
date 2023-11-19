@@ -9,5 +9,6 @@ public record CardDto(Long id,
                       String billingSystem,
                       String number,
                       LocalDate expDate,
+                      String cvv,
                       String status) {
 }

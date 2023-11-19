@@ -5,10 +5,9 @@ import com.kosvad9.database.enums.StatusStaff;
 
 public record StaffDto(Long id,
                        String phoneNumber,
-                       String password,
                        String firstName,
                        String lastName,
                        String patronymic,
-                       RoleStaff role,
-                       StatusStaff status) {
+                       String role,
+                       String status) {
 }

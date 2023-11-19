@@ -8,6 +8,5 @@ public record StaffCreateDto(String phoneNumber,
                              String firstName,
                              String lastName,
                              String patronymic,
-                             RoleStaff role,
-                             StatusStaff status) {
+                             RoleStaff role) {
 }

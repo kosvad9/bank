@@ -1,6 +1,7 @@
 package com.kosvad9.service;
 
 import com.kosvad9.IntegrationTestBase;
+import com.kosvad9.database.entity.Client;
 import com.kosvad9.dto.ClientCreateDto;
 import com.kosvad9.dto.ClientDto;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,5 @@ public class ClientServiceTest extends IntegrationTestBase {
     public void registrationNewClient(){
         ClientDto client = clientService.registration(newClient);
         assertThat(client.id()).isNotNull();
-        System.out.println(client);
     }
 }

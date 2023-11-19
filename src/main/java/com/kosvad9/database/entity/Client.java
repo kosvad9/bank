@@ -10,7 +10,7 @@ import java.util.List;
 
 @Data
 @ToString(callSuper = true, exclude = {"accounts","credits","applications"})
-@EqualsAndHashCode(of = "passportInfo.passportId")
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @PrimaryKeyJoinColumn(name = "id_user")
 public class Client extends User{

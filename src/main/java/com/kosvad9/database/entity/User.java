@@ -3,12 +3,14 @@ package com.kosvad9.database.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnTransformer;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(of = "phoneNumber")
 @Entity
 @Table(name = "users")
 //uniqueConstraints = @UniqueConstraint(columnNames = {"first_name","last_name","patronymic"})
