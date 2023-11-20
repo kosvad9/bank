@@ -52,6 +52,11 @@ public class AccountService {
         return accountDtoMapper.map(accountRepository.save(account));
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void fillingUpAccount(Long accountId, BigDecimal sum){
+        accountRepository.addMoney(accountId, sum);
+    }
+
     public AccountDto getAccount(Long accountId){
         return accountRepository.findById(accountId).map(accountDtoMapper::map).orElse(null);
     }

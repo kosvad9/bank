@@ -22,9 +22,9 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     @Modifying(clearAutomatically = true,flushAutomatically = true)
     @Query("update Account a set a.amount = a.amount - :summ where a.id = :accountId")
-    boolean subtractMoney(Long accountId, BigDecimal summ);
+    void subtractMoney(Long accountId, BigDecimal summ);
 
     @Modifying(clearAutomatically = true,flushAutomatically = true)
     @Query("update Account a set a.amount = a.amount + :summ where a.id = :accountId")
-    boolean addMoney(Long accountId, BigDecimal summ);
+    void addMoney(Long accountId, BigDecimal summ);
 }

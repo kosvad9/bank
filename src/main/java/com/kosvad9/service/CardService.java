@@ -13,8 +13,10 @@ import com.kosvad9.mapper.Mapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
@@ -34,8 +36,10 @@ public class CardService {
     @Value("${card.bin}")
     private final String bin;
 
-    public boolean P2P(CardDto card, String number){
-        return false;
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void P2P(Long cardId, String number, BigDecimal sum){
+        cardRepository.subtractMoneyP2P(cardId, sum);
+        cardRepository.addMoneyP2P(number, sum);
     }
 
     public CardDto getCard(Long cardId){
