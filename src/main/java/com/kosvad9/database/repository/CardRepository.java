@@ -24,10 +24,10 @@ public interface CardRepository extends JpaRepository<Card, Long> {
     Card findCardById(Long cardId);
 
     @Modifying(clearAutomatically = true,flushAutomatically = true)
-    @Query("update Card c set c.account.amount = c.account.amount - :summ where c.id = :cardId")
-    void subtractMoneyP2P(Long cardId, BigDecimal summ);
+    @Query("update Card c set c.account.amount = c.account.amount - :sum where c.id = :cardId")
+    void subtractMoneyP2P(Long cardId, BigDecimal sum);
 
     @Modifying(clearAutomatically = true,flushAutomatically = true)
-    @Query("update Card c set c.account.amount = c.account.amount - :summ where c.number = :cardNumber")
-    void addMoneyP2P(String cardNumber, BigDecimal summ);
+    @Query("update Card c set c.account.amount = c.account.amount - :sum where c.number = :cardNumber")
+    void addMoneyP2P(String cardNumber, BigDecimal sum);
 }

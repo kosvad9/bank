@@ -21,10 +21,10 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     Optional<Account> findAccountByIban(String iban);
 
     @Modifying(clearAutomatically = true,flushAutomatically = true)
-    @Query("update Account a set a.amount = a.amount - :summ where a.id = :accountId")
-    void subtractMoney(Long accountId, BigDecimal summ);
+    @Query("update Account a set a.amount = a.amount - :sum where a.id = :accountId")
+    void subtractMoney(Long accountId, BigDecimal sum);
 
     @Modifying(clearAutomatically = true,flushAutomatically = true)
-    @Query("update Account a set a.amount = a.amount + :summ where a.id = :accountId")
-    void addMoney(Long accountId, BigDecimal summ);
+    @Query("update Account a set a.amount = a.amount + :sum where a.id = :accountId")
+    void addMoney(Long accountId, BigDecimal sum);
 }

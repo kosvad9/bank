@@ -32,4 +32,6 @@ public class Credit implements BaseEntity<Long> {
     private LocalDate dateEnd;
 
     private Integer interestRate;
+
+    private LocalDate lastPaymentDate;
 }
