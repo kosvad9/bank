@@ -1,0 +1,21 @@
+.account-container {
+    height: 80px;
+    width: 700px;
+    margin-top: 10px;
+    background-color: white;
+    /*border: 1px solid rgb(243,214,121,0);*/
+    box-shadow: 0 4px 16px rgb(198,165,95,0.2);
+    border-radius: 15px;
+    /*border-color: rgb(243,214,121,0);*/
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.account-container > div {
+    display: inline-block;
+}
+u {
+    margin-left: 10px;
+    font-size: 30px;
+    font-family: 'Arial Black'
+}

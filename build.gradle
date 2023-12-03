@@ -30,11 +30,15 @@ dependencyManagement {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation "org.hibernate.orm:hibernate-jcache"
+    implementation "org.ehcache:ehcache"
     implementation 'org.springframework.data:spring-data-envers'
     implementation 'org.liquibase:liquibase-core'
     implementation 'org.postgresql:postgresql'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation "org.testcontainers:postgresql:${versions.testcontainers}"
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 }
 
 test {

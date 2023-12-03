@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная страница</title>
+    <link rel="stylesheet" href="mainstyle.css">
+    <link rel="stylesheet" href="account.css">
+</head>
+<body>
+<div class="header">
+    <div class="menu-container">
+        <nav>
+            <h3 class="logo">BANK</h3>
+            <ul>
+                <li><a href="#">Счета</a></li>
+                <li><a class="current" href="#">Кредиты</a></li>
+                <li><a href="#">Заявки на кредитование</a></li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<div class="body">
+    <div style="width: 80%; margin-top: 50px">
+        <u>Кредиты</u>
+        <div class="account-container" th:each="account : ${accounts}">
+            <div style="width: 70%">
+                <span style="font-family: 'Arial Black'" th:text="${account.iban()}">dummy iban</span>
+            </div>
+            <div>
+                <span style="color: rgb(221,189,109)" th:text="|${account.amount()}  ${account.currency().toUpperCase()} |">dummy amount</span>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

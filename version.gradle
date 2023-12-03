@@ -2,6 +2,7 @@ ext {
     versions = [
             "testcontainers" : "1.18.0",
             "querydsl":"5.0.0",
-            "liquibase":"4.24.0"
+            "liquibase":"4.24.0",
+            "ehcache":"3.10.8"
     ]
 }

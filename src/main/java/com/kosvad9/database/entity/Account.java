@@ -3,6 +3,9 @@ package com.kosvad9.database.entity;
 import com.kosvad9.database.enums.StatusAccount;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -16,6 +19,7 @@ import java.util.List;
 @EqualsAndHashCode(of = "iban")
 @Builder
 @Entity
+@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class Account implements BaseEntity<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,6 +45,7 @@ public class Account implements BaseEntity<Long> {
     @Enumerated(EnumType.STRING)
     private StatusAccount status;
 
+    @NotAudited
     @Builder.Default
     @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
     private List<Card> cards = new ArrayList<>();
