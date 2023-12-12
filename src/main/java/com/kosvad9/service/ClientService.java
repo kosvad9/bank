@@ -11,6 +11,9 @@ import com.kosvad9.dto.ClientDto;
 import com.kosvad9.mapper.ClientDtoMapper;
 import com.kosvad9.mapper.Mapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,7 +42,7 @@ public class ClientService {
     }
 
     public ClientDto registration(ClientCreateDto clientCreate){
-        Client client = clientRepository.save(createDtoClientMapper.map(clientCreate));
+        Client client = clientRepository.saveAndFlush(createDtoClientMapper.map(clientCreate));
         return clientDtoMapper.map(client);
     }
 
@@ -52,4 +55,5 @@ public class ClientService {
         maybeClient.ifPresent(clientRepository::delete);
         return maybeClient.isPresent();
     }
+
 }

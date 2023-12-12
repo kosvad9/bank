@@ -9,9 +9,13 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Repository
 public interface CreditRepository extends JpaRepository<Credit, Long> {
+
+    List<Credit> getCreditsByClient_Id(Long clientId);
+
     @Query("select count(c) from Credit c where c.debt > 0 and c.client.id = :clientId")
     Integer countNotPaidCredits(Long clientId);
 

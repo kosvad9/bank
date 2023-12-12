@@ -1,0 +1,17 @@
+.credit-container {
+    height: 120px;
+    width: 600px;
+    padding: 10px;
+    margin-bottom: 20px;
+    background-color: white;
+    /*border: 1px solid rgb(243,214,121,0);*/
+    box-shadow: 0 4px 16px rgb(198,165,95,0.2);
+    border-radius: 10px;
+    /*border-color: rgb(243,214,121,0);*/
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.credit-container > div {
+    display: inline-block;
+}

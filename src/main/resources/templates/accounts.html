@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Главная страница</title>
-    <link rel="stylesheet" href="mainstyle.css">
-    <link rel="stylesheet" href="account.css">
+    <link rel="stylesheet" href="styles/mainstyle.css" th:href="@{styles/mainstyle.css}">
+    <link rel="stylesheet" href="styles/account.css" th:href="@{styles/account.css}">
+    <link rel="stylesheet" href="styles/form.css" th:href="@{styles/form.css}">
 </head>
 <body>
 <div class="header">
@@ -20,41 +21,26 @@
     </div>
 </div>
 <div class="body">
-    <div style="width:100%; margin-top: 50px; display: inline-flex; justify-content: space-around">
-        <div class="componentWraper">
-            <p class="componentTitle">Открыть счет</p>
-            <form action="/accounts/create" method="post">
-                <label>
-                    <input>
-                </label>
-                <label for="firstname">Firstname:
-                    <input id="firstname" type="text" name="firstname" th:value="*{firstname}">
-                </label><br>
-                <div>
-                    <label for="company">Company:
-                        <select id="company" name="companyId">
-                            <option th:each="company : ${companies}"
-                                    th:value="${company.id()}"
-                                    th:selected="${company.id() == user.companyId}"
-                                    th:text="${company.name()}">Company</option>
-                        </select>
-                    </label>
-                </div>
-                <button type="submit">Register</button>
-            </form>
-        </div>
-        <div class="componentWraper">
-            <p class="componentTitle">Перевод по номеру карты</p>
-        </div>
-        <div class="componentWraper">
-            <p class="componentTitle">Перевод по номеру счета</p>
-        </div>
+    <div style="width:80%; margin-top: 50px;">
+        <form class="form" th:action="@{/accounts/create}" method="post">
+            <h1 class="form_title" style="margin-bottom: 20px">Открыть счет</h1>
+            <label class="static_label">Валюта счета</label>
+            <div class="form_group">
+                    <select class="form_input" id="currency" name="currencyId">
+                        <option th:each="currency : ${currencies}"
+                                th:value="${currency.id()}"
+                                th:selected="false"
+                                th:text="${currency.code()} +' - '+ ${currency.name()}">Валюта</option>
+                    </select>
+            </div>
+            <button class="form_button" type="submit">Открыть</button>
+        </form>
     </div>
     <div style="width: 80%; margin-top: 50px">
-        <u>Счета</u>
+        <h1 class="form_title" style="text-align: left; margin: 0 0 20px 10px">Счета</h1>
         <div class="account-container" th:each="account : ${accounts}">
             <div style="width: 70%">
-                <span style="font-family: 'Arial Black'" th:text="${account.iban()}">dummy iban</span>
+                <span style="font-weight: bold" th:text="${account.iban()}">dummy iban</span>
             </div>
             <div>
                 <span style="color: rgb(221,189,109)" th:text="|${account.amount()}  ${account.currency().toUpperCase()} |">dummy amount</span>

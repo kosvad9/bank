@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="styles/form.css" th:href="@{../styles/form.css}">
+    <style>
+        body {
+            background-color: rgb(242,241,237);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+<form class="form" th:action="@{/registration}" method="post" th:object="${user}">
+    <h1 class="form_title">Регистрация</h1>
+    <div class="form_group">
+        <input type="text" class="form_input" id="phoneNumber" name="phoneNumber" placeholder=" " required autofocus>
+        <label class="form_label">Номер телефона</label>
+    </div>
+    <div class="form_group">
+        <input type="password" class="form_input" id="password" name="password" placeholder=" ">
+        <label class="form_label">Пароль</label>
+    </div>
+    <div class="form_group">
+        <input type="text" class="form_input" id="firstName" name="firstName" placeholder=" ">
+        <label class="form_label">Имя</label>
+    </div>
+    <div class="form_group">
+        <input type="text" class="form_input" id="lastName" name="lastName" placeholder=" ">
+        <label class="form_label">Фамилия</label>
+    </div>
+    <div class="form_group">
+        <input type="text" class="form_input" id="patronymic" name="patronymic" placeholder=" ">
+        <label class="form_label">Отчество</label>
+    </div>
+    <div class="form_group">
+        <input type="date" class="form_input" id="birthDate" name="birthDate" placeholder=" ">
+        <label class="form_label">Дата рождения</label>
+    </div>
+    <div class="form_group">
+        <input type="text" class="form_input" id="passportNumber" name="passportNumber" placeholder=" ">
+        <label class="form_label">Номер паспорта</label>
+    </div>
+    <div class="form_group">
+        <input type="text" class="form_input" id="passportId" name="passportId" placeholder=" ">
+        <label class="form_label">Идентификационный номер</label>
+    </div>
+    <div class="form_group">
+        <input type="date" class="form_input" id="passportDate" name="passportDate" placeholder=" ">
+        <label class="form_label">Дата выдачи паспорта</label>
+    </div>
+    <button class="form_button" type="submit">Регистрация</button>
+</form>
+</body>
+</html>

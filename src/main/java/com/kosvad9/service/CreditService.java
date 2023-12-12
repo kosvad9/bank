@@ -3,7 +3,11 @@ package com.kosvad9.service;
 import com.kosvad9.database.entity.Credit;
 import com.kosvad9.database.repository.AccountRepository;
 import com.kosvad9.database.repository.CreditRepository;
+import com.kosvad9.dto.CreditDto;
+import com.kosvad9.mapper.Mapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +18,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.time.Year;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Transactional
@@ -21,6 +26,7 @@ import java.time.temporal.ChronoUnit;
 public class CreditService {
     private final CreditRepository creditRepository;
     private final AccountRepository accountRepository;
+    private Mapper<Credit, CreditDto> mapper;
     public Integer countPaidCredits(Long clientId){
         return creditRepository.countPaidCredits(clientId);
     }
@@ -29,6 +35,9 @@ public class CreditService {
         return creditRepository.countNotPaidCredits(clientId);
     }
 
+    public List<CreditDto> getCredits(Long clientId){
+        return creditRepository.getCreditsByClient_Id(clientId).stream().map(mapper::map).toList();
+    }
     public BigDecimal getNextPaymentAmount(Long creditId){
         Credit credit = creditRepository.getReferenceById(creditId);
         BigDecimal nextPayment = getNextPaymentAmountWithoutPercent(credit);
@@ -56,5 +65,10 @@ public class CreditService {
         sum = sum.subtract(percent);
         creditRepository.pay(creditId, sum, LocalDate.now());
         return true;
+    }
+
+    @Autowired
+    public void setMapper(Mapper<Credit, CreditDto> mapper) {
+        this.mapper = mapper;
     }
 }

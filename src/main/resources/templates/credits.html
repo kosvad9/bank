@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Главная страница</title>
-    <link rel="stylesheet" href="mainstyle.css">
-    <link rel="stylesheet" href="account.css">
+    <link rel="stylesheet" href="styles/mainstyle.css" th:href="@{styles/mainstyle.css}">
+    <link rel="stylesheet" href="styles/credit.css" th:href="@{styles/credit.css}">
+    <link rel="stylesheet" href="styles/form_credit.css" th:href="@{styles/form_credit.css}">
 </head>
 <body>
 <div class="header">
@@ -12,7 +13,7 @@
         <nav>
             <h3 class="logo">BANK</h3>
             <ul>
-                <li><a href="#">Счета</a></li>
+                <li><a href="#" th:href="@{/accounts}">Счета</a></li>
                 <li><a class="current" href="#">Кредиты</a></li>
                 <li><a href="#">Заявки на кредитование</a></li>
             </ul>
@@ -20,15 +21,49 @@
     </div>
 </div>
 <div class="body">
-    <div style="width: 80%; margin-top: 50px">
-        <u>Кредиты</u>
-        <div class="account-container" th:each="account : ${accounts}">
-            <div style="width: 70%">
-                <span style="font-family: 'Arial Black'" th:text="${account.iban()}">dummy iban</span>
-            </div>
+    <div style="width: 70%; margin-top: 50px">
+        <div style="display: flex; justify-content: space-around;">
             <div>
-                <span style="color: rgb(221,189,109)" th:text="|${account.amount()}  ${account.currency().toUpperCase()} |">dummy amount</span>
+                <div class="credit-container" th:each="credit : ${credits}">
+                    <div style="width:45%; display: block; text-align: left;">
+                        <div style="width: 100%">
+                            <h2 style="color: rgb(115, 94, 46); font-weight: normal; margin-bottom: 5px"  th:text="${account.iban()}">Amount</h2>
+                        </div>
+                        <div style="width: 100%"><h3 style="font-weight: normal; padding-top: 13%" th:text="${account.iban()}">InterestRate</h3></div>
+                    </div>
+                    <div style="width:45%; display: block; text-align: right">
+                        <div style="color: rgb(221,189,109); width: 100%; " th:text="|${account.amount()}  ${account.currency().toUpperCase()} |">
+                            <h1 style="color: rgb(221,189,109); font-weight: normal"> dummy amount</h1>
+                        </div>
+                        <div style="width: 100%;"><h3 style="font-weight: normal; padding-top: 13%" th:text="${account.iban()}">DateEnd</h3></div>
+                    </div>
+                </div>
             </div>
+            <form class="form" th:action="@{/accounts/create}" method="post">
+                <h2 class="form_title">Погашение кредита</h2>
+                <div class="form_group">
+                    <label class="static_label">Счет для оплаты</label>
+                    <select class="form_input" id="currency" name="currencyId">
+                        <option th:each="currency : ${currencies}"
+                                th:value="${currency.id()}"
+                                th:selected="false"
+                                th:text="${currency.code()} +' - '+ ${currency.name()}">Валюта</option>
+                    </select>
+                </div>
+                <div class="form_group">
+                    <label class="static_label">Счет для оплаты</label>
+                    <select class="form_input" id="currency" name="currencyId">
+                        <option th:each="currency : ${currencies}"
+                                th:value="${currency.id()}"
+                                th:selected="false"
+                                th:text="${currency.code()} +' - '+ ${currency.name()}">Валюта</option>
+                    </select>
+                </div>
+                <div class="form_group" style="margin-top: 32px">
+                    <input type="text" class="form_input" id="amount" name="amount" placeholder=" ">
+                    <label class="form_label">Сумма к оплате</label>
+                </div>
+                <button class="form_button" type="submit">Оплатить</button>
         </div>
     </div>
 </div>

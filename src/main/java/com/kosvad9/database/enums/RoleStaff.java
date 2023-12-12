@@ -1,5 +1,12 @@
 package com.kosvad9.database.enums;
 
-public enum RoleStaff {
-    ADMIN, MANAGER
+import org.springframework.security.core.GrantedAuthority;
+
+public enum RoleStaff implements GrantedAuthority {
+    ADMIN, MANAGER;
+
+    @Override
+    public String getAuthority() {
+        return name();
+    }
 }
