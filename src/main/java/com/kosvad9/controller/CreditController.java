@@ -29,8 +29,8 @@ public class CreditController {
     }
 
     @PostMapping("/pay")
-    public String pay(Long creditId, Long accountId, BigDecimal sum){
-        creditService.pay(creditId, accountId, sum);
+    public String pay(Long creditId, Long accountId, BigDecimal amount){
+        creditService.pay(creditId, accountId, amount);
         return "redirect:/credits";
     }
 }

@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Главная страница</title>
-    <link rel="stylesheet" href="styles/mainstyle.css">
-    <link rel="stylesheet" href="styles/account.css">
+    <link rel="stylesheet" href="styles/mainstyle.css" th:href="@{styles/mainstyle.css}">
+    <link rel="stylesheet" href="styles/credit_application.css" th:href="@{styles/credit_application.css}">
+    <link rel="stylesheet" href="styles/form_credit_application.css" th:href="@{styles/form_credit_application.css}">
 </head>
 <body>
 <div class="header">
@@ -12,23 +13,56 @@
         <nav>
             <h3 class="logo">BANK</h3>
             <ul>
-                <li><a href="#">Счета</a></li>
-                <li><a href="#">Кредиты</a></li>
+                <li><a href="/accounts" th:href="@{/accounts}">Счета</a></li>
+                <li><a href="/credits" th:href="@{/credits}">Кредиты</a></li>
                 <li><a class="current" href="#">Заявки на кредитование</a></li>
             </ul>
         </nav>
     </div>
 </div>
 <div class="body">
-    <div style="width: 80%; margin-top: 50px">
-        <u>Заявки</u>
-        <div class="account-container" th:each="account : ${accounts}">
-            <div style="width: 70%">
-                <span style="font-family: 'Arial Black'" th:text="${account.iban()}">dummy iban</span>
-            </div>
+    <div style="width: 70%; margin-top: 50px">
+        <div style="display: flex; justify-content: space-around;">
             <div>
-                <span style="color: rgb(221,189,109)" th:text="|${account.amount()}  ${account.currency().toUpperCase()} |">dummy amount</span>
+                <div class="credit-container" th:each="creditApplication : ${creditApplications}">
+                    <div style="width:45%; display: block; text-align: left;">
+                        <div style="width: 100%">
+                            <h2 style="color: rgb(115, 94, 46); font-weight: normal; margin-bottom: 5px"  th:text="${credit.amount()}">Amount</h2>
+                        </div>
+                        <div style="width: 100%"><h3 style="font-weight: normal; padding-top: 13%" th:text="|'ставка' ${credit.interestRate()}'%'|">InterestRate</h3></div>
+                    </div>
+                    <div style="width:45%; display: block; text-align: right">
+                        <div style="color: rgb(221,189,109); width: 100%">
+                            <h1 style="color: rgb(221,189,109); font-weight: normal" th:text="|'остаток' ${credit.debt()}|"> dummy amount</h1>
+                        </div>
+                        <div style="width: 100%;"><h3 style="font-weight: normal; padding-top: 13%" th:text="|'Срок погашения:' ${credit.dateEnd()}|">DateEnd</h3></div>
+                    </div>
+                </div>
             </div>
+            <form class="form" th:action="@{/creditApplications/create}" method="post">
+                <h2 class="form_title">Оформление заявки</h2>
+                <div class="form_group">
+                    <label class="static_label">Программа кредитования</label>
+                    <label class="radio_label" th:each="creditProgram : ${creditPrograms}">
+                    <input type="radio" name="creditProgramId" id="creditProgramId" th:value="${creditProgram.id()}"/>
+                        <div class="credit-container" style="display: block">
+                            <span style="font-size: 12px" th:text="${creditProgram.description()}">description</span>
+                            <h6 th:text="|'Макс. срок - '${creditProgram.maxPeriodMonth()} 'месяцев'|">Макс. срок - ХХ месяцев</h6>
+                            <h6 th:text="|'Макс. сумма - '${creditProgram.maxAmount()} 'рублей'|">Макс. сумма - Х0000 рублей</h6>
+                            <h6 th:text="|'Процентная ставка - '${creditProgram.interestRate()}'% годовых'|">Процентная ставка - ХХ % годовых</h6>
+                        </div>
+                    </label>
+                </div>
+                <div class="form_group" style="margin-top: 32px">
+                    <input type="text" class="form_input" id="amount" name="amount" placeholder=" ">
+                    <label class="form_label">Сумма</label>
+                </div>
+                <div class="form_group" style="margin-top: 32px">
+                    <input type="number" min="1" class="form_input" id="period" name="period" placeholder=" ">
+                    <label class="form_label">Период месяцев</label>
+                </div>
+                <button class="form_button" type="submit">Создать</button>
+            </form>
         </div>
     </div>
 </div>

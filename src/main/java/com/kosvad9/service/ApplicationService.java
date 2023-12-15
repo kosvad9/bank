@@ -1,13 +1,12 @@
 package com.kosvad9.service;
 
-import com.kosvad9.database.entity.Application;
-import com.kosvad9.database.entity.Credit;
+import com.kosvad9.database.entity.*;
 import com.kosvad9.database.enums.StatusApplication;
-import com.kosvad9.database.repository.AccountRepository;
-import com.kosvad9.database.repository.ApplicationRepository;
-import com.kosvad9.database.repository.CreditRepository;
+import com.kosvad9.database.repository.*;
+import com.kosvad9.dto.ApplicationCreateDto;
 import com.kosvad9.dto.ApplicationDto;
 import com.kosvad9.mapper.Mapper;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Transactional
@@ -26,9 +26,31 @@ import java.time.temporal.ChronoUnit;
 public class ApplicationService {
     private final ApplicationRepository applicationRepository;
     private final Mapper<Application, ApplicationDto> applicationDtoMapper;
-    private final AccountRepository accountRepository;
+    private final AccountService accountService;
     private final CreditRepository creditRepository;
+    private final CreditProgramRepository creditProgramRepository;
+    private final ClientRepository clientRepository;
     private final int PAGESIZE = 10;
+
+    public List<ApplicationDto> getAllApplications(Long clientId){
+        return applicationRepository.getAllByClient_IdOrderByDateDesc(clientId).stream()
+                .map(applicationDtoMapper::map)
+                .toList();
+    }
+
+    public void createApplication(ApplicationCreateDto applicationCreateDto, Long clientId){
+        CreditProgram creditProgram = creditProgramRepository.getReferenceById(applicationCreateDto.creditProgramId());
+        Client client = clientRepository.findById(clientId)
+                .orElseThrow(() -> new EntityNotFoundException("Сущность клиент не найдена!"));
+        Application application = Application.builder()
+                .date(LocalDate.now())
+                .status(StatusApplication.CREATED)
+                .program(creditProgram)
+                .periodMonth(applicationCreateDto.periodMonth())
+                .amount(applicationCreateDto.amount())
+                .build();
+        applicationRepository.save(application);
+    }
 
     public Page<ApplicationDto> getFirstPageApplications(){
         Pageable pageRequest = PageRequest.of(0, PAGESIZE, Sort.by("date"));
@@ -73,10 +95,8 @@ public class ApplicationService {
                 .interestRate(application.getProgram().getInterestRate())
                 .build();
         newCredit = creditRepository.save(newCredit);
-        //зачисляем деньги на счет клиента
-        if (application.getClient().getAccounts().isEmpty()) return false;
-        accountRepository.addMoney(application.getClient().getAccounts().get(0).getId(),
-                application.getAmount());
+        //Создаем счет и зачисляем деньги на счет клиента
+        accountService.createAccountOfCredit(application.getClient().getId(), application.getAmount());
         return true;
     }
 

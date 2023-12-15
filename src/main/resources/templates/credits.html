@@ -6,6 +6,14 @@
     <link rel="stylesheet" href="styles/mainstyle.css" th:href="@{styles/mainstyle.css}">
     <link rel="stylesheet" href="styles/credit.css" th:href="@{styles/credit.css}">
     <link rel="stylesheet" href="styles/form_credit.css" th:href="@{styles/form_credit.css}">
+    <script type="text/javascript">
+        function selectOnChange(obj) {
+            var val = obj.options[obj.selectedIndex].value;
+            if (document.getElementById("creditPaymentAmount").options[obj.selectedIndex].value === val)
+                document.getElementById("amount").value = document.getElementById("creditPaymentAmount").options[obj.selectedIndex].text();
+            else document.getElementById("amount").value = 0.00;
+        }
+    </script>
 </head>
 <body>
 <div class="header">
@@ -27,43 +35,50 @@
                 <div class="credit-container" th:each="credit : ${credits}">
                     <div style="width:45%; display: block; text-align: left;">
                         <div style="width: 100%">
-                            <h2 style="color: rgb(115, 94, 46); font-weight: normal; margin-bottom: 5px"  th:text="${account.iban()}">Amount</h2>
+                            <h2 style="color: rgb(115, 94, 46); font-weight: normal; margin-bottom: 5px"  th:text="${credit.amount()}">Amount</h2>
                         </div>
-                        <div style="width: 100%"><h3 style="font-weight: normal; padding-top: 13%" th:text="${account.iban()}">InterestRate</h3></div>
+                        <div style="width: 100%"><h3 style="font-weight: normal; padding-top: 13%" th:text="|'ставка' ${credit.interestRate()}'%'|">InterestRate</h3></div>
                     </div>
                     <div style="width:45%; display: block; text-align: right">
-                        <div style="color: rgb(221,189,109); width: 100%; " th:text="|${account.amount()}  ${account.currency().toUpperCase()} |">
-                            <h1 style="color: rgb(221,189,109); font-weight: normal"> dummy amount</h1>
+                        <div style="color: rgb(221,189,109); width: 100%">
+                            <h1 style="color: rgb(221,189,109); font-weight: normal" th:text="|'остаток' ${credit.debt()}|"> dummy amount</h1>
                         </div>
-                        <div style="width: 100%;"><h3 style="font-weight: normal; padding-top: 13%" th:text="${account.iban()}">DateEnd</h3></div>
+                        <div style="width: 100%;"><h3 style="font-weight: normal; padding-top: 13%" th:text="|'Срок погашения:' ${credit.dateEnd()}|">DateEnd</h3></div>
                     </div>
                 </div>
             </div>
-            <form class="form" th:action="@{/accounts/create}" method="post">
+            <form class="form" th:action="@{/credits/pay}" method="post">
                 <h2 class="form_title">Погашение кредита</h2>
                 <div class="form_group">
                     <label class="static_label">Счет для оплаты</label>
-                    <select class="form_input" id="currency" name="currencyId">
-                        <option th:each="currency : ${currencies}"
-                                th:value="${currency.id()}"
+                    <select class="form_input" style="font-size: 14px; padding-bottom: 5px" id="accountId" name="accountId">
+                        <option th:each="account : ${accounts}"
+                                th:value="${account.id()}"
                                 th:selected="false"
-                                th:text="${currency.code()} +' - '+ ${currency.name()}">Валюта</option>
+                                th:text="${account.iban()} +' - '+ ${account.amount()} + ' ' + ${account.currency()}">Счет</option>
                     </select>
                 </div>
                 <div class="form_group">
-                    <label class="static_label">Счет для оплаты</label>
-                    <select class="form_input" id="currency" name="currencyId">
-                        <option th:each="currency : ${currencies}"
-                                th:value="${currency.id()}"
+                    <label class="static_label">Кредит для погашения</label>
+                    <select onchange='selectOnChange(this)' class="form_input" style="font-size: 14px; padding-bottom: 5px" id="creditId" name="creditId">
+                        <option th:each="credit : ${credits}"
+                                th:value="${credit.id()}"
                                 th:selected="false"
-                                th:text="${currency.code()} +' - '+ ${currency.name()}">Валюта</option>
+                                th:text="'Остаток: ' + ${credit.debt()} + ', до ' + ${credit.dateEnd()}">Кредит</option>
                     </select>
                 </div>
+                <select style="visibility: hidden; position: absolute" id="creditPaymentAmount" name="creditPaymentAmount">
+                    <option th:each="credit : ${credits}"
+                            th:value="${credit.id()}"
+                            th:selected="false"
+                            th:text="${credit.nextPaymentAmount()}">0.00</option>
+                </select>
                 <div class="form_group" style="margin-top: 32px">
                     <input type="text" class="form_input" id="amount" name="amount" placeholder=" ">
                     <label class="form_label">Сумма к оплате</label>
                 </div>
                 <button class="form_button" type="submit">Оплатить</button>
+            </form>
         </div>
     </div>
 </div>

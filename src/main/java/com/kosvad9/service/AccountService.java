@@ -53,6 +53,19 @@ public class AccountService {
         return accountDtoMapper.map(accountRepository.save(account));
     }
 
+    public void createAccountOfCredit(Long clientId, BigDecimal sum){
+        Client client = clientRepository.getReferenceById(clientId);
+        Optional<Currency> maybeCurrency = currencyRepository.getCurrencyByCode("BYN");
+        Account account = Account.builder()
+                .amount(sum)
+                .dateCreate(LocalDate.now())
+                .status(StatusAccount.ACTIVE)
+                .iban(generateIBAN())
+                .build();
+        maybeCurrency.ifPresent(account::setCurrency);
+        accountRepository.save(account);
+    }
+
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void fillingUpAccount(Long accountId, BigDecimal sum){
         accountRepository.addMoney(accountId, sum);
