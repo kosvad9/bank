@@ -6,6 +6,7 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 
 import java.time.LocalDate;
 
-public record CardCreateDto(BillingSystem billingSystem,
+public record CardCreateDto(Long account,
+                            BillingSystem billingSystem,
                             Integer periodYears) {
 }

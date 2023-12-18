@@ -4,7 +4,9 @@ import com.kosvad9.database.entity.Credit;
 import com.kosvad9.database.repository.AccountRepository;
 import com.kosvad9.database.repository.CreditRepository;
 import com.kosvad9.dto.CreditDto;
+import com.kosvad9.mapper.CreditDtoMapper;
 import com.kosvad9.mapper.Mapper;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -26,7 +28,7 @@ import java.util.List;
 public class CreditService {
     private final CreditRepository creditRepository;
     private final AccountRepository accountRepository;
-    private Mapper<Credit, CreditDto> mapper;
+    private final CreditDtoMapper mapper;
     public Integer countPaidCredits(Long clientId){
         return creditRepository.countPaidCredits(clientId);
     }
@@ -67,8 +69,8 @@ public class CreditService {
         return true;
     }
 
-    @Autowired
-    public void setMapper(Mapper<Credit, CreditDto> mapper) {
-        this.mapper = mapper;
+    @PostConstruct
+    public void init(){
+        mapper.setCreditService(this);
     }
 }

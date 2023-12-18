@@ -12,6 +12,6 @@ import java.util.Optional;
 
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Long> {
-    @EntityGraph(attributePaths = {"accounts"})
+    @EntityGraph(attributePaths = {"accounts","accounts.cards"})
     Optional<Client> findById(Long id);
 }

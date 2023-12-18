@@ -20,6 +20,7 @@ public class ApplicationDtoMapper implements Mapper<Application, ApplicationDto>
                 value.getDate(),
                 value.getAmount(),
                 value.getPeriodMonth(),
+                value.getDescription(),
                 value.getStatus(),
                 clientDtoMapper.map(value.getClient()),
                 creditProgramDtoMapper.map(value.getProgram()));

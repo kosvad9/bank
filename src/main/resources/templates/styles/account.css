@@ -1,19 +1,43 @@
 .account-container {
-    height: 80px;
-    width: 700px;
+    height: auto;
+    width: 750px;
     margin-top: 10px;
     background-color: white;
     /*border: 1px solid rgb(243,214,121,0);*/
     box-shadow: 0 4px 16px rgb(198,165,95,0.2);
     border-radius: 10px;
     /*border-color: rgb(243,214,121,0);*/
+}
+.account-container > div {
+    padding-top: 30px;
     display: flex;
     align-items: center;
     justify-content: space-around;
 }
-.account-container > div {
-    display: inline-block;
+
+.card_div {
+    display: flex;
+    justify-content: space-between;
+    border-radius: 10px;
+    margin-left: 5%;
+    margin-bottom: 10px;
+    width: 90%;
+    background: linear-gradient(90deg, rgba(243,214,121,0.8) 14%, rgba(221,189,109,0.8) 50%, rgba(222, 185, 107,0.8) 100%);
 }
+
+.card_div > h3 {
+    font-weight: normal;
+}
+
+hr {
+    width: 96%;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid rgba(86,74,51,0.3);
+    margin: 1em 0;
+    padding: 0;
+}
+
 u {
     margin-left: 10px;
     font-size: 30px;

@@ -1,5 +1,6 @@
 package com.kosvad9.configuration;
 
+import com.kosvad9.database.enums.RoleStaff;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +10,7 @@ import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.*;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -21,6 +23,7 @@ public class SecurityConfiguration implements WebMvcConfigurer {
         http
                 .authorizeHttpRequests(config -> config
                         .requestMatchers("/styles/**","/login/registration","/login", "/registration").permitAll()
+                        .requestMatchers("/manage").hasAuthority(RoleStaff.MANAGER.name())
                         .anyRequest().authenticated())
                 .formLogin(login -> login
                         .loginPage("/login")

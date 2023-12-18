@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная страница</title>
+    <link rel="stylesheet" href="styles/mainstyle.css" th:href="@{styles/mainstyle.css}">
+    <link rel="stylesheet" href="styles/manage.css" th:href="@{styles/manage.css}">
+    <link rel="stylesheet" href="styles/form_credit_application.css" th:href="@{styles/form_credit_application.css}">
+</head>
+<body>
+<div class="header">
+    <div class="menu-container">
+        <nav>
+            <h3 class="logo">BANK</h3>
+            <form th:action="@{/logout}" method="post">
+                <a href="#" onclick="parentNode.submit();">Выход</a>
+            </form>
+        </nav>
+    </div>
+</div>
+<div class="body">
+    <div style="width: 90%; margin-top: 50px">
+        <div style="display: flex; justify-content: space-around;">
+            <div class="credit-container" th:each="creditApplication : ${creditApplications}">
+                <div>
+                    <h3 th:text="|'Ставка' ${creditApplication.creditProgramDto().interestRate()}'%'|">InterestRate</h3>
+                    <h3 th:text="|'Сумма' ${creditApplication.amount()} 'руб.'|">Amount</h3>
+                    <h3 th:text="|'Период' ${creditApplication.periodMonth()} 'месяцев'|">Period</h3>
+                </div>
+                <center><hr></center>
+                <div style="text-align: left; padding-bottom: 0">
+                    <h1 th:text="|'Программа: ' ${creditApplication.clientDto().firstName()} ${creditApplication.clientDto().lastName()}|">Program</h1>
+                </div>
+                <div>
+                    <h3 th:text="|'Сумма до' ${creditApplication.creditProgramDto().maxAmount()} 'руб.'|">MaxAmount</h3>
+                    <h3 th:text="|'Период до' ${creditApplication.creditProgramDto().maxPeriodMonth()} 'месяцев'|">MaxPeriod</h3>
+                </div>
+                <center><hr></center>
+                <div style="text-align: left; padding-bottom: 0">
+                        <h1 th:text="|'Клиент: ' ${creditApplication.clientDto().firstName()} ${creditApplication.clientDto().lastName()}|">Client</h1>
+                </div>
+                <center><hr></center>
+                <form style="padding: 10px 20px 20px 20px;  width: 100%"
+                      th:action="@{/manage}" method="post">
+                    <input type="number" hidden="hidden" id="applicationId" name="applicationId" th:value="${creditApplication.id()}">
+                    <div style="width: 100%">
+                        <label class="static_label">Причина отказа (опционально, только для отказа)</label>
+                        <div class="form_group">
+                            <input type="text" class="form_input" id="reason" name="reason" placeholder=" ">
+                        </div>
+                    </div>
+                    <button th:formaction="@{/manage/reject}" class="form_button" style="margin-right: 40px" type="submit">Отказ</button>
+                    <button th:formaction="@{/manage/approve}" class="form_button" type="submit" >Одобрение</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -25,17 +25,16 @@
         <div style="display: flex; justify-content: space-around;">
             <div>
                 <div class="credit-container" th:each="creditApplication : ${creditApplications}">
-                    <div style="width:45%; display: block; text-align: left;">
-                        <div style="width: 100%">
-                            <h2 style="color: rgb(115, 94, 46); font-weight: normal; margin-bottom: 5px"  th:text="${credit.amount()}">Amount</h2>
-                        </div>
-                        <div style="width: 100%"><h3 style="font-weight: normal; padding-top: 13%" th:text="|'ставка' ${credit.interestRate()}'%'|">InterestRate</h3></div>
+                    <div>
+                        <h3 th:text="|'Ставка' ${creditApplication.creditProgramDto().interestRate()}'%'|">InterestRate</h3>
+                        <h3 th:text="|'Сумма' ${creditApplication.amount()} 'руб.'|">Amount</h3>
+                        <h3 th:text="|'Период' ${creditApplication.periodMonth()} 'месяцев'|">Period</h3>
                     </div>
-                    <div style="width:45%; display: block; text-align: right">
-                        <div style="color: rgb(221,189,109); width: 100%">
-                            <h1 style="color: rgb(221,189,109); font-weight: normal" th:text="|'остаток' ${credit.debt()}|"> dummy amount</h1>
-                        </div>
-                        <div style="width: 100%;"><h3 style="font-weight: normal; padding-top: 13%" th:text="|'Срок погашения:' ${credit.dateEnd()}|">DateEnd</h3></div>
+                    <div style="width: 100%" th:if="${creditApplication.description()}">
+                        <h4 th:text="|'Комментарий: ' ${creditApplication.description()}|">Description</h4>
+                    </div>
+                    <div style="text-align: right; padding-bottom: 0">
+                            <h1 th:text="|'Статус: ' ${credit.debt()}|">Status</h1>
                     </div>
                 </div>
             </div>

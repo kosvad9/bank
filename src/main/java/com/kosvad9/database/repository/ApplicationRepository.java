@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public interface ApplicationRepository extends JpaRepository<Application, Long> {
     @EntityGraph(attributePaths = {"program","client"})
-    @Query(value = "select app from Application app",
+    @Query(value = "select app from Application app where app.status = 'CREATED'",
             countQuery = "select count(distinct app.id) from Application app")
     Page<Application> findAllBy(Pageable pageable);
 

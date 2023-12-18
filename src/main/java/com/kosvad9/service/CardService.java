@@ -50,6 +50,9 @@ public class CardService {
         return cardRepository.findCardsByAccount_Id(accountId).stream().map(cardDtoMapper::map).toList();
     }
 
+    public List<CardDto> getClientCards(Long clientId){
+        return cardRepository.findCardsByAccountClient_Id(clientId).stream().map(cardDtoMapper::map).toList();
+    }
     public CardDto createCard(Long accountId, CardCreateDto cardCreate){
         Account account = accountRepository.getReferenceById(accountId);
         Random rnd = new Random();
@@ -59,10 +62,11 @@ public class CardService {
                 .billingSystem(cardCreate.billingSystem())
                 .expirationDate(ChronoUnit.YEARS.addTo(LocalDate.now(), cardCreate.periodYears()))
                 .status(StatusCard.ACTIVE)
-                .number("")
+                .number(generateCardNumber(cardCreate.billingSystem().getBillingSystemDigit()))
                 .cvv(cvv)
                 .build();
-        return cardDtoMapper.map(cardRepository.save(card));
+        card = cardRepository.saveAndFlush(card);
+        return cardDtoMapper.map(card);
     }
 
     private String generateCardNumber(char billingSystemDigit){

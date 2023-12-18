@@ -5,7 +5,7 @@
     <title>Главная страница</title>
     <link rel="stylesheet" href="styles/mainstyle.css" th:href="@{styles/mainstyle.css}">
     <link rel="stylesheet" href="styles/account.css" th:href="@{styles/account.css}">
-    <link rel="stylesheet" href="styles/form.css" th:href="@{styles/form.css}">
+    <link rel="stylesheet" href="styles/form_account.css" th:href="@{styles/form_account.css}">
 </head>
 <body>
 <div class="header">
@@ -14,38 +14,115 @@
             <h3 class="logo">BANK</h3>
             <ul>
                 <li><a class="current" href="#">Счета</a></li>
-                <li><a href="#">Кредиты</a></li>
-                <li><a href="#">Заявки на кредитование</a></li>
+                <li><a href="#" th:href="@{/credits}">Кредиты</a></li>
+                <li><a href="#" th:href="@{/creditApplications}">Заявки на кредитование</a></li>
             </ul>
+            <form th:action="@{/logout}" method="post">
+                <a href="#" onclick="parentNode.submit();">Выход</a>
+            </form>
         </nav>
     </div>
 </div>
 <div class="body">
-    <div style="width:80%; margin-top: 50px;">
-        <form class="form" th:action="@{/accounts/create}" method="post">
+    <div style="width:80%; margin-top: 50px; display: flex;">
+        <form class="form" style="width: 400px;" th:action="@{/accounts/p2p}" method="post">
+            <h1 class="form_title" style="margin-bottom: 20px">Перевод с карты на карту</h1>
+            <label class="static_label">Карта для операции</label>
+            <div class="form_group">
+                <select class="form_input" id="cardId" name="cardId">
+                    <option th:each="card : ${cards}"
+                            th:value="${card.id()}"
+                            th:selected="false"
+                            th:text="|${card.number()}      ${#temporals.format(card.expDate(),'mm/yy')}|">Карта</option>
+                </select>
+            </div>
+            <div class="form_group">
+                <input type="text" class="form_input" id="cardNumber" name="cardNumber" placeholder=" ">
+                <label class="form_label">Номер карты получателя</label>
+            </div>
+            <div class="form_group">
+                <input type="text" class="form_input" id="amountCard" name="amountCard" placeholder=" ">
+                <label class="form_label">Сумма</label>
+            </div>
+            <button class="form_button" type="submit">Перевести</button>
+        </form>
+
+        <form class="form" style="width: 400px" th:action="@{/accounts/transfer}" method="post">
+            <h1 class="form_title" style="margin-bottom: 20px">Перевод со счёта на счёт</h1>
+            <label class="static_label">Счёт для операции</label>
+            <div class="form_group">
+                <select class="form_input" id="accountId" name="accountId">
+                    <option th:each="account : ${accounts}"
+                            th:value="${account.id()}"
+                            th:selected="false"
+                            th:text="|${account.iban()}|">Счёт</option>
+                </select>
+            </div>
+            <div class="form_group">
+                <input type="text" class="form_input" id="accountNumber" name="accountNumber" placeholder=" ">
+                <label class="form_label">Номер счёта получателя</label>
+            </div>
+            <div class="form_group">
+                <input type="text" class="form_input" id="amountAccount" name="amountAccount" placeholder=" ">
+                <label class="form_label">Сумма</label>
+            </div>
+            <button class="form_button" type="submit">Перевести</button>
+        </form>
+    </div>
+    <div style="width: 80%; margin-top: 50px; display: flex; justify-content: space-between">
+        <div>
+            <h1 class="form_title" style="text-align: left; margin: 0 0 20px 10px">Счета</h1>
+            <div class="account-container" th:each="account : ${accounts}">
+                <div>
+                    <div style="width: 70%">
+                        <span style="font-weight: bold" th:text="${account.iban()}">dummy iban</span>
+                    </div>
+                    <div>
+                        <span style="color: rgb(221,189,109)" th:text="|${account.amount()}  ${account.currency().toUpperCase()} |">dummy amount</span>
+                    </div>
+                </div>
+                <center><hr></center>
+                <div class="card_div" style="padding: 5px" th:each="card : ${account.cards()}">
+                    <h3 th:text="|${card.number()}|">InterestRate</h3>
+                    <h3 th:text="|${#temporals.format(card.expDate(),'mm/yy')}   ${card.billingSystem()}|">Period</h3>
+                </div>
+                <form style="padding: 10px 20px 20px 20px; display: flex; justify-content: space-between; align-items: center; width: 100%"
+                       th:action="@{/accounts/createCard}" method="post">
+                    <input type="number" hidden="hidden" id="account" name="account" th:value="${account.id()}">
+                    <div style="width: 50%">
+                        <label class="static_label">Платежная система</label>
+                        <div class="form_group">
+                            <select class="form_input" id="billingSystem" name="billingSystem">
+                                <option th:each="billing : ${billingSystems}"
+                                        th:value="${billing.toString()}"
+                                        th:selected="false"
+                                        th:text="|${billing.toString()}|">МастерКард</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="width: 20%">
+                        <label class="static_label">Срок действия (лет)</label>
+                        <div class="form_group">
+                            <input type="number" min="1" class="form_input" id="periodYears" name="periodYears" placeholder=" ">
+                        </div>
+                    </div>
+                    <button class="form_button" type="submit">Выпуск карты</button>
+                </form>
+            </div>
+        </div>
+        <form class="form" style="margin-top: 55px" th:action="@{/accounts/create}" method="post">
             <h1 class="form_title" style="margin-bottom: 20px">Открыть счет</h1>
             <label class="static_label">Валюта счета</label>
             <div class="form_group">
-                    <select class="form_input" id="currency" name="currencyId">
-                        <option th:each="currency : ${currencies}"
-                                th:value="${currency.id()}"
-                                th:selected="false"
-                                th:text="${currency.code()} +' - '+ ${currency.name()}">Валюта</option>
-                    </select>
+                <select class="form_input" id="currency" name="currencyId">
+                    <option th:each="currency : ${currencies}"
+                            th:value="${currency.id()}"
+                            th:selected="false"
+                            th:text="${currency.code()} +' - '+ ${currency.name()}">Валюта</option>
+                </select>
             </div>
             <button class="form_button" type="submit">Открыть</button>
         </form>
-    </div>
-    <div style="width: 80%; margin-top: 50px">
-        <h1 class="form_title" style="text-align: left; margin: 0 0 20px 10px">Счета</h1>
-        <div class="account-container" th:each="account : ${accounts}">
-            <div style="width: 70%">
-                <span style="font-weight: bold" th:text="${account.iban()}">dummy iban</span>
-            </div>
-            <div>
-                <span style="color: rgb(221,189,109)" th:text="|${account.amount()}  ${account.currency().toUpperCase()} |">dummy amount</span>
-            </div>
-        </div>
     </div>
 </div>
 </body>

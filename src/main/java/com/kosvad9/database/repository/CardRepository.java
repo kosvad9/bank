@@ -23,6 +23,9 @@ public interface CardRepository extends JpaRepository<Card, Long> {
     @EntityGraph(attributePaths = "account")
     Card findCardById(Long cardId);
 
+    @Query("select c from Card c where c.account.client.id = :clientId")
+    List<Card> findCardsByAccountClient_Id(Long clientId);
+
     @Modifying(clearAutomatically = true,flushAutomatically = true)
     @Query("update Card c set c.account.amount = c.account.amount - :sum where c.id = :cardId")
     void subtractMoneyP2P(Long cardId, BigDecimal sum);

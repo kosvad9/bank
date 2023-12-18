@@ -23,8 +23,11 @@
             <ul>
                 <li><a href="#" th:href="@{/accounts}">Счета</a></li>
                 <li><a class="current" href="#">Кредиты</a></li>
-                <li><a href="#">Заявки на кредитование</a></li>
+                <li><a href="#" th:href="@{/creditApplications}">Заявки на кредитование</a></li>
             </ul>
+            <form th:action="@{/logout}" method="post">
+                <a href="#" onclick="parentNode.submit();">Выход</a>
+            </form>
         </nav>
     </div>
 </div>
@@ -47,7 +50,7 @@
                     </div>
                 </div>
             </div>
-            <form class="form" th:action="@{/credits/pay}" method="post">
+            <form class="form" th:if="${!credits.isEmpty()}" th:action="@{/credits/pay}" method="post">
                 <h2 class="form_title">Погашение кредита</h2>
                 <div class="form_group">
                     <label class="static_label">Счет для оплаты</label>
