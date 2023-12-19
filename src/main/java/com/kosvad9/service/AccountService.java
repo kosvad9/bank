@@ -11,6 +11,7 @@ import com.kosvad9.dto.AccountCreateDto;
 import com.kosvad9.dto.AccountDto;
 import com.kosvad9.mapper.*;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -83,12 +84,15 @@ public class AccountService {
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public boolean moneyTransfer(Long accountIdFrom, String accountIbanTo, BigDecimal sum){
+    public void moneyTransfer(Long accountIdFrom, String accountIbanTo, BigDecimal sum){
         Account accountTo = accountRepository.findAccountByIban(accountIbanTo).orElse(null);
-        if (accountTo == null) return false;
-        accountRepository.subtractMoney(accountIdFrom, sum);
-        accountRepository.addMoney(accountTo.getId(), sum);
-        return true;
+        if (accountTo == null) throw new RuntimeException("Аккаунт получателя не найден!");
+        try {
+            accountRepository.subtractMoney(accountIdFrom, sum);
+            accountRepository.addMoney(accountTo.getId(), sum);
+        } catch (Exception e) {
+            throw new RuntimeException("Не удалось выполнить перевод! Возможно не хватает средств!");
+        }
     }
 
     private String generateIBAN(){

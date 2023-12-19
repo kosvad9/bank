@@ -15,10 +15,10 @@
     </style>
 </head>
 <body>
-<form class="form" th:action="@{/registration}" method="post" th:object="${user}">
+<form class="form" th:action="@{/registration}" method="post" th:object="${client}">
     <h1 class="form_title">Регистрация</h1>
     <div class="form_group">
-        <input type="text" class="form_input" id="phoneNumber" name="phoneNumber" placeholder=" " required autofocus>
+        <input type="text" class="form_input" id="phoneNumber" name="phoneNumber" placeholder=" " required autofocus th:value="*{phoneNumber()}">
         <label class="form_label">Номер телефона</label>
     </div>
     <div class="form_group">
@@ -26,34 +26,37 @@
         <label class="form_label">Пароль</label>
     </div>
     <div class="form_group">
-        <input type="text" class="form_input" id="firstName" name="firstName" placeholder=" ">
+        <input type="text" class="form_input" id="firstName" name="firstName" placeholder=" " th:value="*{firstName()}">
         <label class="form_label">Имя</label>
     </div>
     <div class="form_group">
-        <input type="text" class="form_input" id="lastName" name="lastName" placeholder=" ">
+        <input type="text" class="form_input" id="lastName" name="lastName" placeholder=" " th:value="*{lastName()}">
         <label class="form_label">Фамилия</label>
     </div>
     <div class="form_group">
-        <input type="text" class="form_input" id="patronymic" name="patronymic" placeholder=" ">
+        <input type="text" class="form_input" id="patronymic" name="patronymic" placeholder=" " th:value="*{patronymic()}">
         <label class="form_label">Отчество</label>
     </div>
     <div class="form_group">
-        <input type="date" class="form_input" id="birthDate" name="birthDate" placeholder=" ">
+        <input type="date" class="form_input" id="birthDate" name="birthDate" placeholder=" " th:value="*{birthDate()}">
         <label class="form_label">Дата рождения</label>
     </div>
     <div class="form_group">
-        <input type="text" class="form_input" id="passportNumber" name="passportNumber" placeholder=" ">
+        <input type="text" class="form_input" id="passportNumber" name="passportNumber" placeholder=" " th:value="*{passportNumber()}">
         <label class="form_label">Номер паспорта</label>
     </div>
     <div class="form_group">
-        <input type="text" class="form_input" id="passportId" name="passportId" placeholder=" ">
+        <input type="text" class="form_input" id="passportId" name="passportId" placeholder=" " th:value="*{passportId()}">
         <label class="form_label">Идентификационный номер</label>
     </div>
     <div class="form_group">
-        <input type="date" class="form_input" id="passportDate" name="passportDate" placeholder=" ">
+        <input type="date" class="form_input" id="passportDate" name="passportDate" placeholder=" " th:value="*{passportDate()}">
         <label class="form_label">Дата выдачи паспорта</label>
     </div>
     <button class="form_button" type="submit">Регистрация</button>
+    <div th:if="${errors}">
+        <p style="color: red" th:each="error : ${errors}" th:text="${error.defaultMessage}"></p>
+    </div>
 </form>
 </body>
 </html>
