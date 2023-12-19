@@ -19,6 +19,8 @@ public class Client extends User{
     @Embedded
     private PassportInfo passportInfo;
 
+    private String image;
+
     @Builder.Default
     @OneToMany(mappedBy = "client",fetch = FetchType.LAZY)
     private List<Account> accounts = new ArrayList<>();
@@ -35,9 +37,10 @@ public class Client extends User{
     }
 
     @Builder
-    public Client(Long id, String phoneNumber, String password, String firstName, String lastName, String patronymic, LocalDate birthDate, String passportNumber, String passportId, LocalDate passportDate) {
+    public Client(Long id, String phoneNumber, String password, String firstName, String lastName, String patronymic, LocalDate birthDate, String passportNumber, String passportId, LocalDate passportDate, String image) {
         super(id, phoneNumber, password, firstName, lastName, patronymic);
         this.birthDate = birthDate;
+        this.image = image;
         this.passportInfo = PassportInfo.builder().
                 passportNumber(passportNumber).
                 passportId(passportId).

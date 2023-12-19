@@ -17,6 +17,13 @@
                 <li><a href="#" th:href="@{/credits}">Кредиты</a></li>
                 <li><a href="#" th:href="@{/creditApplications}">Заявки на кредитование</a></li>
             </ul>
+            <form th:action="@{/api/avatar}" method="post" enctype="multipart/form-data">
+                <div class="avatar" style="background-image: url('/api/avatar')">
+                    <input id="avatar" type="file" name="avatar"
+                           style="opacity: 0.0; top: 0; left: 0; bottom: 0; right: 0; width: 50px; height:50px;"
+                            onchange="this.form.submit();">
+                </div>
+            </form>
             <form th:action="@{/logout}" method="post">
                 <a href="#" onclick="parentNode.submit();">Выход</a>
             </form>

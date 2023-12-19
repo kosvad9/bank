@@ -15,4 +15,5 @@ public record ClientDto(Long id,
                         LocalDate birthDate,
                         String passportNumber,
                         String passportId,
-                        LocalDate passportDate){ }
+                        LocalDate passportDate,
+                        String image){ }

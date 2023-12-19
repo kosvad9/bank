@@ -16,6 +16,7 @@ public class ClientDtoMapper implements Mapper<Client, ClientDto> {
                 value.getBirthDate(),
                 value.getPassportInfo().getPassportNumber(),
                 value.getPassportInfo().getPassportId(),
-                value.getPassportInfo().getPassportDate());
+                value.getPassportInfo().getPassportDate(),
+                value.getImage());
     }
 }

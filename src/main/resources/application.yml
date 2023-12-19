@@ -36,3 +36,4 @@ logging:
     path: /
   level:
     root: info
+app.image.bucket: /Users/vadim/IdeaProjects/bank/avatars
