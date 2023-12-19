@@ -5,6 +5,7 @@ import com.kosvad9.service.ClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +26,8 @@ public class LoginController {
     }
 
     @GetMapping("/login/registration")
-    public String registration(){
+    public String registration(Model model, @ModelAttribute("client") ClientCreateDto clientCreateDto){
+        model.addAttribute("client", clientCreateDto);
         return "registration";
     }
 
@@ -34,8 +36,8 @@ public class LoginController {
                            BindingResult bindingResult,
                            RedirectAttributes redirectAttributes){
         if (bindingResult.hasErrors()){
-            redirectAttributes.addAttribute("errors", bindingResult.getAllErrors());
-            redirectAttributes.addAttribute("client", clientCreateDto);
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+            redirectAttributes.addFlashAttribute("client", clientCreateDto);
             return "redirect:/login/registration";
         }
         clientService.registration(clientCreateDto);

@@ -55,7 +55,7 @@
     </div>
     <button class="form_button" type="submit">Регистрация</button>
     <div th:if="${errors}">
-        <p style="color: red" th:each="error : ${errors}" th:text="${error.defaultMessage}"></p>
+        <p style="color: red" th:each="error : ${errors}" th:text="|${error.field} ${error.defaultMessage}|"></p>
     </div>
 </form>
 </body>
